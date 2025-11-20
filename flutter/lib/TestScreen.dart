@@ -40,19 +40,20 @@ class HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: .end,
             children: [
-              Row(children: [
-                Text("Has pressed: $_pressedNumber"),
+              Column(children:
+              [Text("Has pressed: $_pressedNumber"),
                 ElevatedButton(onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Elevate Button")));
+                      SnackBar(
+                          content: Text("Elevate Button to show SnackBar")));
                 }, child: Text("Click me")),
                 ElevatedButton(onPressed: () {
                   _routeMe();
                 }, child: Text("Route me"))
               ],),
-              Image.asset('assets/avatar.jpg')
+              Image.asset('assets/hulk.jpg')
             ],
           ),
         ),
@@ -70,10 +71,10 @@ class HomePageState extends State<HomePage> {
 
   void _routeMe() {
     ///Cach 1: pushVC
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) {
-            return ListViewViewController();
-          }));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+          return ListViewViewController();
+        }));
 
     // ///Cach 2: showDialog
     //   showDialog(context: context,
@@ -87,15 +88,15 @@ class HomePageState extends State<HomePage> {
     //         );
     //       });
 
-      // ///Cach 3: showModalBottomSheet
-      // showModalBottomSheet(context: context,
-      //     builder: (BuildContext context) {
-      //       return DraggableScrollableSheet(
-      //         expand: false,
-      //         builder: (context, scrollController) {
-      //           return ListViewViewController();
-      //         },
-      //       );
-      //     });
+    // ///Cach 3: showModalBottomSheet
+    // showModalBottomSheet(context: context,
+    //     builder: (BuildContext context) {
+    //       return DraggableScrollableSheet(
+    //         expand: false,
+    //         builder: (context, scrollController) {
+    //           return ListViewViewController();
+    //         },
+    //       );
+    //     });
   }
 }
