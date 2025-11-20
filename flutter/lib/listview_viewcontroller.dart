@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'DemoViewController.dart';
+
 class ListViewViewController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,10 @@ class ListViewViewController extends StatelessWidget {
             child: ElevatedButton(onPressed: () {
               Navigator.pop(context);
             }, child: Text("Pop me"),),
-          )
+          ),
+          ElevatedButton(onPressed: () {
+            _routeMeToDemo(context);
+          }, child: Text("Navigate me to demo screen"),)
         ],
       )
       )
@@ -68,5 +73,13 @@ class ListViewViewController extends StatelessWidget {
           separatorBuilder: (BuildContext context, int index) => Divider(),
           itemCount: entries.length),
     );
+  }
+
+  void _routeMeToDemo(BuildContext context) {
+      ///Push viewcontroller
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+          return DemoViewController();
+        }));
   }
 }
