@@ -42,7 +42,7 @@ class DemoViewControllerState extends State<DemoViewController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Change background Sacombank Lao'),
+        title: Text('Pick image'),
       ),
       body: SafeArea(
         child: Center(
