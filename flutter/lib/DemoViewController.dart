@@ -26,6 +26,10 @@ class DemoViewControllerState extends State<DemoViewController> {
   List<Image> imageList = [
     Image.asset('assets/hulk.jpg'),
     Image.asset('assets/avatar.jpg'),
+    Image.asset('assets/baoboi.JPG'),
+    Image.asset('assets/conmeobolao.jpg'),
+    Image.asset('assets/hoicham.JPG'),
+    Image.asset('assets/jerrython.JPG'),
   ];
 
   @override
@@ -66,13 +70,18 @@ class DemoViewControllerState extends State<DemoViewController> {
     return GridView.builder(
       padding: .all(8),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+        crossAxisCount: 3,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        childAspectRatio: 1,
       ),
       itemCount: imageList.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            currentImage = imageList[index];
+            setState(() {
+              currentImage = imageList[index];
+            });
           },
 
           child: Container(
