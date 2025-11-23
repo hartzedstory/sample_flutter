@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'DemoViewController.dart';
+import 'package:sample_flutter_module/DemoChatView.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
+import 'package:flutter/services.dart';
 
+import 'DemoViewController.dart';
+const MethodChannel _chatChannel = MethodChannel("com.vnpay.chatsamplechannel");
 void main() {
   runApp(const MyApp());
 }
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Shorebird Demo 1'),
+      home: const MyHomePage(title: 'VNPAY Chat Application'),
     );
   }
 }
@@ -42,11 +46,56 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) {
-          return DemoViewController();
-        }));
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchPatchIfNeed();
+    });
+  }
+
+  void _fetchPatchIfNeed() async {
+    final shorebird = ShorebirdUpdater();
+    final hasUpdate = await shorebird.checkForUpdate();
+    switch (hasUpdate) {
+      case UpdateStatus.upToDate:
+      // Dang moi nhat:
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text('Cập nhật'),
+            content: Text('Hiện không có bản cập nhật mới nào'),
+            actions: [],
+          ),
+        );
+      case UpdateStatus.outdated:
+      // Co mot ban cap nhat, can cap nhat.
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text('Cập nhật'),
+            content: Text('Đã có bản cập nhật mới. Khởi động lại ứng dụng để áp dụng.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _hotRestartApplication();
+                },
+                child: Text('Khởi động lại'),
+              )
+            ],
+          ),
+        );
+        await shorebird.update();
+        throw UnimplementedError();
+      case UpdateStatus.restartRequired:
+      // TODO: Handle this case.
+        throw UnimplementedError();
+      case UpdateStatus.unavailable:
+      // TODO: Handle this case.
+        throw UnimplementedError();
+    }
   }
 
   @override
@@ -86,19 +135,44 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Xin chào:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            ElevatedButton(onPressed: () {
+              _fetchPatchIfNeed();
+            }, child: Text("Fetch latest version if need")),
+            ElevatedButton(onPressed: () {
+              _navigateToNext();
+            }, child: Text("Start Flutter SDK Feature")),
+            ElevatedButton(onPressed: () {
+              _gotoListView();
+            }, child: Text("Go to list view")),
+            ElevatedButton(onPressed: () {
+              _backToMainApp();
+            }, child: Text("Back to main app")),
+
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _navigateToNext() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+          return DemoViewController();
+        }));
+  }
+
+  void _gotoListView() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+          return DemoChatCustomView();
+        }));
+  }
+
+  void _hotRestartApplication() async {
+    await _chatChannel.invokeMethod("reloadExample");
+  }
+
+  void _backToMainApp() async {
+    await _chatChannel.invokeMethod("backToMainApp");
   }
 }

@@ -27,6 +27,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  shorebird_code_push: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -85,3 +86,11 @@ flutter:
     androidX: true
     androidPackage: com.example.sample_flutter_module
     iosBundleIdentifier: com.example.sampleFlutterModule
+  assets:
+    - shorebird.yaml
+    - assets/avatar.jpg
+    - assets/hulk.jpg
+    - assets/conmeobolao.jpg
+    - assets/hoicham.JPG
+    - assets/jerrython.JPG
+    - shorebird.yaml
